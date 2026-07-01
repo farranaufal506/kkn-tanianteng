@@ -81,7 +81,7 @@ async function sendMessage() {
     const dataTerbaru = data && data.length > 0 ? data[data.length - 1] : null;
 
     // 2. Baru lakukan fetch ke server proxy + Vercel
-    const res = await fetch("https://cors-anywhere.herokuapp.com/https://kkn-tanianteng.vercel.app/api/chat", {
+    const res = await fetch("https://kkn-tanianteng.vercel.app/api/chat", {
         method: 'POST',
         headers: { 
             'Content-Type': 'application/json' 
