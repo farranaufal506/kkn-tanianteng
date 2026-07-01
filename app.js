@@ -77,17 +77,20 @@ async function sendMessage() {
         const { data } = await supabaseClient.from('sensor_data').select('*').limit(1);
 
         // 2. Kirim pertanyaan dan data sensor ke Backend (Dapur) yang kita buat tadi
-        // GUNAKAN INI AGAR AI BISA DIHUBUNGI SECARA ONLINE
-      // PASTIKAN ADA /api/chat DI BELAKANGNYA
-       // Tambahkan proxy milik cors-anywhere tepat sebelum link Vercel kamu
+     // 1. Ambil data terbaru secara lokal terlebih dahulu (Taruh di ATAS fetch)
+    const dataTerbaru = data && data.length > 0 ? data[data.length - 1] : null;
+
+    // 2. Baru lakukan fetch ke server proxy + Vercel
     const res = await fetch("https://cors-anywhere.herokuapp.com/https://kkn-tanianteng.vercel.app/api/chat", {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-        message: userMsg,
-        sensorData: data 
-    })
-});
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({
+            message: userMsg,
+            sensorData: dataTerbaru // Hanya mengirim 1 objek data terbaru
+        })
+    });
 
         if (!res.ok) throw new Error(`Status: ${res.status}`);
 
