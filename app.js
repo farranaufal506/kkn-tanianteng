@@ -1,5 +1,5 @@
 // --- KONFIGURASI SUPABASE (Hanya untuk baca data, aman di frontend) ---
-const supabaseClient = supabase.createClient("https://wbgnpyitaplcxruonpel", "sb_publishable_EOBfXP0Vdd2YVKNRWscXTQ_pX9zOQpg");
+const supabaseClient = supabase.createClient("https://wbgnpyitaplcxruonpel.supabase.co", "sb_publishable_EOBfXP0Vdd2YVKNRWscXTQ_pX9zOQpg");
 
 // --- NAVIGASI ---
 function switchView(view) {
@@ -11,27 +11,35 @@ function switchView(view) {
 
 // --- MENGAMBIL DATA SENSOR DARI SUPABASE ---
 // --- 1. AMBIL DATA AWAL SAAT WEB DIBUKA ---
+// --- 1. AMBIL DATA AWAL SAAT WEB DIBUKA ---
 async function loadInitialData() {
     const { data, error } = await supabaseClient
         .from('sensor_data')
-        .select('*')
-        .order('id', { ascending: false }) // Ambil data paling baru
-        .limit(1);
+        .select('*'); // Mengambil semua data tanpa sorting di server
+    
+    if (error) {
+        console.error("Error Supabase Detail:", error);
+        return;
+    }
+
+    console.log("Data dari Supabase:", data);
     
     if (data && data.length > 0) {
-        updateDashboardUI(data[0]);
+        // Mengambil baris paling terakhir yang ada di dalam array data
+        const dataTerbaru = data[data.length - 1]; 
+        updateDashboardUI(dataTerbaru);
     }
 }
 
 // --- 2. FUNGSI UNTUK MENGUBAH ANGKA DI LAYAR ---
 function updateDashboardUI(item) {
-    // Disamakan persis dengan kolom di Supabase (suhu, kelembaban, tanah, tds, jarak, ph)
     document.getElementById('valSuhu').innerText = item.suhu ?? '--';
-    document.getElementById('valKelembapan').innerText = item.kelembaban ?? '--';
-    document.getElementById('valTanah').innerText = item.tanah ?? '--';
+    document.getElementById('valKelembapan').innerText = item.kelembapan_udara ?? '--';
+    document.getElementById('valTanah').innerText = item.rata_rata_tanah ?? '--';
     document.getElementById('valTds').innerText = item.tds ?? '--';
-    document.getElementById('valJarak').innerText = item.jarak ?? '--';
+    document.getElementById('valJarak').innerText = item.jarak_air ?? '--';
     document.getElementById('valPh').innerText = item.ph ?? '--';
+
     
     // Efek kedip kecil tanda data baru masuk
     document.getElementById('valSuhu').classList.add('text-green-400');
