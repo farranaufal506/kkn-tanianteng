@@ -7,9 +7,7 @@ const port = process.env.PORT || 3000;
 
 // Izinkan Frontend untuk berkomunikasi dengan Backend
 app.use(cors());
-    origin: "*", 
-    methods: ['GET', 'POST']
-}));
+
 app.use(express.json());
 
 // Rute Uji Coba (Cek apakah server hidup)
