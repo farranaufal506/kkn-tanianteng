@@ -78,14 +78,15 @@ async function sendMessage() {
 
         // 2. Kirim pertanyaan dan data sensor ke Backend (Dapur) yang kita buat tadi
         // GUNAKAN INI AGAR AI BISA DIHUBUNGI SECARA ONLINE
+      // PASTIKAN ADA /api/chat DI BELAKANGNYA
         const res = await fetch("https://kkn-tanianteng.vercel.app/api/chat", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
         message: userMsg,
-        sensorData: data // Kirim data Supabase ke backend
-      })
-    });
+        sensorData: data
+    })
+});
 
         if (!res.ok) throw new Error(`Status: ${res.status}`);
 
