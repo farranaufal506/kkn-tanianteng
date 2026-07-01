@@ -91,5 +91,22 @@
     </main>
 
     <script src="app.js"></script>
+
+    <script>
+  async function testAI() {
+    const response = await fetch("https://kkn-tanianteng.vercel.app/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: "Tes koneksi",
+        sensorData: { suhu: 30 }
+      })
+    });
+    const data = await response.json();
+    console.log(data);
+    alert("Jawaban AI: " + data.reply);
+  }
+</script>
+
 </body>
 </html>

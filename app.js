@@ -25,11 +25,12 @@ async function loadInitialData() {
 
 // --- 2. FUNGSI UNTUK MENGUBAH ANGKA DI LAYAR ---
 function updateDashboardUI(item) {
+    // Disamakan persis dengan kolom di Supabase (suhu, kelembaban, tanah, tds, jarak, ph)
     document.getElementById('valSuhu').innerText = item.suhu ?? '--';
-    document.getElementById('valKelembapan').innerText = item.kelembapan_udara ?? '--';
-    document.getElementById('valTanah').innerText = item.rata_rata_tanah ?? '--';
+    document.getElementById('valKelembapan').innerText = item.kelembaban ?? '--';
+    document.getElementById('valTanah').innerText = item.tanah ?? '--';
     document.getElementById('valTds').innerText = item.tds ?? '--';
-    document.getElementById('valJarak').innerText = item.jarak_air ?? '--';
+    document.getElementById('valJarak').innerText = item.jarak ?? '--';
     document.getElementById('valPh').innerText = item.ph ?? '--';
     
     // Efek kedip kecil tanda data baru masuk
@@ -68,14 +69,15 @@ async function sendMessage() {
         const { data } = await supabaseClient.from('sensor_data').select('*').limit(1);
 
         // 2. Kirim pertanyaan dan data sensor ke Backend (Dapur) yang kita buat tadi
-        const res = await fetch("http://localhost:3000/api/chat", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                message: userMsg,
-                sensorData: data // Kirim data Supabase ke backend
-            })
-        });
+        // GUNAKAN INI AGAR AI BISA DIHUBUNGI SECARA ONLINE
+        const res = await fetch("https://kkn-tanianteng.vercel.app/api/chat", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+        message: userMsg,
+        sensorData: data // Kirim data Supabase ke backend
+      })
+    });
 
         if (!res.ok) throw new Error(`Status: ${res.status}`);
 
