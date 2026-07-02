@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "cleanUrls": true,
   "builds": [
     {
       "src": "server.js",
@@ -12,8 +13,18 @@
       "dest": "server.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "server.js"
+      "src": "/index.html",
+      "continue": true
+    },
+    {
+      "src": "/app.js",
+      "continue": true
+    },
+    {
+      "src": "/",
+      "status": 200,
+      "headers": { "Content-Type": "text/html" },
+      "dest": "index.html"
     }
   ],
   "headers": [
